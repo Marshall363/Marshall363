@@ -1,5 +1,35 @@
 import { NextRequest, NextResponse } from "next/server";
-import { duffel } from "@/lib/duffel";
+import airportsData from "@/data/airports.json";
+import type { PlaceSuggestion } from "@/lib/types";
+
+interface Airport {
+  iata: string;
+  icao: string;
+  name: string;
+  city: string;
+  country: string;
+  country_code: string;
+  latitude: number;
+  longitude: number;
+  timezone: string;
+  type: string;
+}
+
+const airports: Airport[] = airportsData as Airport[];
+
+// Pre-filter airports that have an IATA code
+const airportsWithIata = airports.filter((a) => a.iata && a.iata.trim() !== "");
+
+function mapToPlaceSuggestion(airport: Airport): PlaceSuggestion {
+  return {
+    id: airport.iata,
+    name: airport.name,
+    iata_code: airport.iata,
+    type: airport.type,
+    city_name: airport.city,
+    iata_country_code: airport.country_code,
+  };
+}
 
 export async function GET(request: NextRequest) {
   const query = request.nextUrl.searchParams.get("query");
@@ -8,24 +38,27 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({ data: [] });
   }
 
-  try {
-    const response = await duffel.suggestions.list({ name: query });
+  const lowerQuery = query.toLowerCase();
 
-    const places = response.data.map((place) => ({
-      id: place.id,
-      name: place.name,
-      iata_code: place.iata_code,
-      type: place.type,
-      city_name: place.city_name,
-      iata_country_code: place.iata_country_code,
-    }));
+  const iataExact: Airport[] = [];
+  const cityMatches: Airport[] = [];
+  const nameMatches: Airport[] = [];
+  const countryMatches: Airport[] = [];
 
-    return NextResponse.json({ data: places });
-  } catch (error) {
-    console.error("Places API error:", error);
-    return NextResponse.json(
-      { error: "Failed to fetch places" },
-      { status: 500 }
-    );
+  for (const airport of airportsWithIata) {
+    if (airport.iata.toLowerCase() === lowerQuery) {
+      iataExact.push(airport);
+    } else if (airport.city.toLowerCase().includes(lowerQuery)) {
+      cityMatches.push(airport);
+    } else if (airport.name.toLowerCase().includes(lowerQuery)) {
+      nameMatches.push(airport);
+    } else if (airport.country.toLowerCase().includes(lowerQuery)) {
+      countryMatches.push(airport);
+    }
   }
+
+  const combined = [...iataExact, ...cityMatches, ...nameMatches, ...countryMatches];
+  const results = combined.slice(0, 8).map(mapToPlaceSuggestion);
+
+  return NextResponse.json({ data: results });
 }
