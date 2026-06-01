@@ -2,196 +2,252 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 import {
   Phone,
   CheckCircle,
-  MapPin,
+  PlaneTakeoff,
+  PlaneLanding,
   Calendar,
-  Users,
+  ChevronDown,
+  ArrowUpDown,
   Search,
 } from "lucide-react";
 
-const airlines = ["Delta", "United", "American", "Lufthansa", "JetBlue"];
-const flightTypes = ["One Way", "Round Trip", "Multi-City"];
+const flightTypes = ["ROUND TRIP", "ONE WAY", "MULTI CITY"] as const;
+
+const airlines = [
+  { name: "Singapore Airlines", code: "SQ" },
+  { name: "Swiss", code: "LX" },
+  { name: "Emirates", code: "EK" },
+  { name: "Qatar Airways", code: "QR" },
+  { name: "Japan Airlines", code: "JL" },
+  { name: "Iberia", code: "IB" },
+];
 
 export default function Hero() {
-  const [activeFlightType, setActiveFlightType] = useState("Round Trip");
+  const [activeFlightType, setActiveFlightType] =
+    useState<(typeof flightTypes)[number]>("ROUND TRIP");
 
   return (
-    <section className="min-h-[calc(100vh-72px)] bg-gradient-to-br from-primary to-primary-dark flex items-center">
-      <div className="max-w-[1200px] mx-auto px-6 w-full grid grid-cols-1 lg:grid-cols-[55%_45%] gap-12 lg:gap-8 items-center py-16 lg:py-0">
-        {/* Left Column */}
-        <div className="flex flex-col gap-6">
-          {/* Eyebrow */}
-          <motion.p
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-[13px] font-semibold tracking-[0.15em] text-accent"
-          >
+    <section className="relative min-h-[calc(100vh-72px)] flex items-center overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-dark to-[#0a1a33]" />
+      <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
+
+      <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 w-full py-12 lg:py-16">
+        {/* Header text */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-8 lg:mb-10"
+        >
+          <p className="text-[13px] font-semibold tracking-[0.15em] text-accent mb-3">
             PREMIUM FLIGHT BOOKING
-          </motion.p>
-
-          {/* Headline */}
-          <motion.h1
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-[36px] md:text-[56px] font-extrabold leading-[1.1] text-white"
-          >
-            Flight Booking, Backed by Real Human Support
-          </motion.h1>
-
-          {/* Subheadline */}
-          <motion.p
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.0, delay: 0.2 }}
-            className="text-xl text-white/85 leading-relaxed"
-          >
+          </p>
+          <h1 className="text-[32px] sm:text-[40px] lg:text-[52px] font-extrabold leading-[1.1] text-white">
+            Flight Booking, Backed by
+            <br className="hidden sm:block" />
+            <span className="text-accent"> Real Human Support</span>
+          </h1>
+          <p className="text-base sm:text-lg text-white/70 mt-4 max-w-2xl mx-auto leading-relaxed">
             Speak directly with experienced travel specialists for flight
             reservations, itinerary changes, and booking support.
-          </motion.p>
+          </p>
+        </motion.div>
 
-          {/* CTA Button */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, delay: 0.4 }}
-          >
-            <a
-              href="tel:1-800-XXX-XXXX"
-              className="inline-flex items-center gap-2 bg-accent text-white rounded-lg px-10 py-[18px] font-semibold text-lg shadow-[0_4px_16px_rgba(232,98,42,0.3)] hover:scale-[1.03] transition-transform duration-300 cursor-pointer"
-            >
-              <Phone className="w-5 h-5" />
-              Speak With a Travel Specialist
-            </a>
-          </motion.div>
-
-          {/* Trust Statement */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, delay: 0.4 }}
-            className="flex items-center gap-2"
-          >
-            <CheckCircle className="w-5 h-5 text-trust-green" />
-            <span className="text-white/90 font-semibold">
-              Real People. Real Support.
-            </span>
-          </motion.div>
-
-          {/* Airline Badges */}
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 1.2, delay: 0.4 }}
-            className="flex flex-col gap-3"
-          >
-            <span className="text-white/70 text-sm">
-              We support bookings with:
-            </span>
-            <div className="flex flex-wrap gap-2">
-              {airlines.map((airline) => (
-                <span
-                  key={airline}
-                  className="bg-white/10 border border-white/20 rounded-md px-3.5 py-1.5 text-white/80 text-sm"
-                >
-                  {airline}
-                </span>
-              ))}
-            </div>
-          </motion.div>
-        </div>
-
-        {/* Right Column - Booking Widget */}
+        {/* Booking Widget */}
         <motion.div
-          initial={{ opacity: 0, x: 30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.2 }}
+          className="max-w-[900px] mx-auto"
         >
-          <div className="bg-white rounded-2xl p-10 shadow-[0_20px_60px_rgba(0,0,0,0.2)]">
-            {/* Title */}
-            <h2 className="font-bold text-[22px] text-text-primary mb-6">
-              Find Your Flight
-            </h2>
+          {/* Flight Type Tabs */}
+          <div className="flex gap-0">
+            {flightTypes.map((type) => (
+              <button
+                key={type}
+                onClick={() => setActiveFlightType(type)}
+                className={`px-5 sm:px-7 py-3 text-xs sm:text-sm font-semibold tracking-wide transition-all duration-200 cursor-pointer border border-white/20 ${
+                  activeFlightType === type
+                    ? "bg-white text-text-primary border-white"
+                    : "bg-white/10 text-white hover:bg-white/20"
+                } ${
+                  type === "ROUND TRIP"
+                    ? "rounded-tl-xl"
+                    : type === "MULTI CITY"
+                      ? "rounded-tr-xl"
+                      : ""
+                }`}
+              >
+                {type}
+              </button>
+            ))}
+          </div>
 
-            {/* Flight Type Toggle */}
-            <div className="flex gap-1 bg-gray-100 rounded-lg p-1 mb-6">
-              {flightTypes.map((type) => (
-                <button
-                  key={type}
-                  onClick={() => setActiveFlightType(type)}
-                  className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-colors duration-200 cursor-pointer ${
-                    activeFlightType === type
-                      ? "bg-primary text-white shadow-sm"
-                      : "bg-transparent text-text-secondary hover:text-text-primary"
-                  }`}
-                >
-                  {type}
-                </button>
-              ))}
+          {/* Form Card */}
+          <div className="bg-white rounded-b-2xl rounded-tr-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden">
+            <div className="p-4 sm:p-6 lg:p-8 space-y-4">
+              {/* From Field */}
+              <div className="relative">
+                <div className="flex items-center bg-surface border border-border rounded-xl px-4 sm:px-5 py-4 sm:py-5 group focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                  <PlaneTakeoff className="w-5 h-5 sm:w-6 sm:h-6 text-text-secondary mr-3 sm:mr-4 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
+                      From
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="City or airport"
+                      className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none placeholder:text-text-secondary/50"
+                    />
+                  </div>
+                  <button
+                    className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-accent text-accent flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-200 cursor-pointer flex-shrink-0"
+                    aria-label="Swap origin and destination"
+                  >
+                    <ArrowUpDown className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </button>
+                </div>
+              </div>
+
+              {/* To Field */}
+              <div className="flex items-center bg-surface border border-border rounded-xl px-4 sm:px-5 py-4 sm:py-5 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                <PlaneLanding className="w-5 h-5 sm:w-6 sm:h-6 text-text-secondary mr-3 sm:mr-4 flex-shrink-0" />
+                <div className="flex-1 min-w-0">
+                  <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
+                    To
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="City or airport"
+                    className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none placeholder:text-text-secondary/50"
+                  />
+                </div>
+              </div>
+
+              {/* Date Row */}
+              <div className="flex bg-surface border border-border rounded-xl overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
+                <div className="flex-1 flex items-center px-4 sm:px-5 py-4 sm:py-5">
+                  <Calendar className="w-5 h-5 sm:w-6 sm:h-6 text-text-secondary mr-3 sm:mr-4 flex-shrink-0" />
+                  <div className="flex-1 min-w-0">
+                    <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
+                      Departure
+                    </label>
+                    <input
+                      type="text"
+                      placeholder="Select date"
+                      className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none placeholder:text-text-secondary/50"
+                    />
+                  </div>
+                </div>
+                {activeFlightType === "ROUND TRIP" && (
+                  <>
+                    <div className="w-px bg-border self-stretch my-3" />
+                    <div className="flex-1 flex items-center px-4 sm:px-5 py-4 sm:py-5">
+                      <div className="flex-1 min-w-0">
+                        <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
+                          Return
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="Select date"
+                          className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none placeholder:text-text-secondary/50"
+                        />
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
+
+              {/* Travelers & Class Row */}
+              <div className="grid grid-cols-2 gap-4">
+                <div className="flex items-center bg-surface border border-border rounded-xl px-4 sm:px-5 py-4 sm:py-5 cursor-pointer hover:border-primary/40 transition-all">
+                  <div className="flex-1 min-w-0">
+                    <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
+                      Travelers
+                    </label>
+                    <select className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none cursor-pointer appearance-none">
+                      <option>1 Traveler</option>
+                      <option>2 Travelers</option>
+                      <option>3 Travelers</option>
+                      <option>4 Travelers</option>
+                      <option>5 Travelers</option>
+                      <option>6+ Travelers</option>
+                    </select>
+                  </div>
+                  <ChevronDown className="w-5 h-5 text-text-secondary flex-shrink-0" />
+                </div>
+
+                <div className="flex items-center bg-surface border border-border rounded-xl px-4 sm:px-5 py-4 sm:py-5 cursor-pointer hover:border-primary/40 transition-all">
+                  <div className="flex-1 min-w-0">
+                    <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
+                      Class
+                    </label>
+                    <select className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none cursor-pointer appearance-none">
+                      <option>Economy</option>
+                      <option>Premium Economy</option>
+                      <option>Business</option>
+                      <option>First</option>
+                    </select>
+                  </div>
+                  <ChevronDown className="w-5 h-5 text-text-secondary flex-shrink-0" />
+                </div>
+              </div>
+
+              {/* Search Button */}
+              <button className="w-full flex items-center justify-center gap-2 bg-accent text-white py-4 sm:py-5 rounded-xl font-bold text-base sm:text-lg shadow-[0_4px_20px_rgba(232,98,42,0.4)] hover:brightness-110 hover:scale-[1.01] transition-all duration-300 cursor-pointer">
+                <Search className="w-5 h-5" />
+                Search Flights
+              </button>
             </div>
 
-            {/* Form Fields */}
-            <div className="flex flex-col gap-4 mb-6">
-              {/* From */}
-              <div className="relative">
-                <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
-                <input
-                  type="text"
-                  placeholder="City or airport"
-                  aria-label="From"
-                  className="w-full border border-border rounded-lg py-3.5 pl-11 pr-4 text-base focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
-                />
-              </div>
-
-              {/* To */}
-              <div className="relative">
-                <MapPin className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
-                <input
-                  type="text"
-                  placeholder="City or airport"
-                  aria-label="To"
-                  className="w-full border border-border rounded-lg py-3.5 pl-11 pr-4 text-base focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
-                />
-              </div>
-
-              {/* Departure */}
-              <div className="relative">
-                <Calendar className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
-                <input
-                  type="text"
-                  placeholder="Select date"
-                  aria-label="Departure date"
-                  className="w-full border border-border rounded-lg py-3.5 pl-11 pr-4 text-base focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
-                />
-              </div>
-
-              {/* Passengers */}
-              <div className="relative">
-                <Users className="absolute left-3.5 top-1/2 -translate-y-1/2 w-5 h-5 text-text-secondary" />
-                <input
-                  type="text"
-                  placeholder="1 Adult"
-                  aria-label="Passengers"
-                  className="w-full border border-border rounded-lg py-3.5 pl-11 pr-4 text-base focus:border-primary focus:ring-2 focus:ring-primary/10 outline-none transition-all"
-                />
-              </div>
-            </div>
-
-            {/* Search Button */}
-            <button className="w-full flex items-center justify-center gap-2 bg-primary text-white py-4 rounded-lg font-semibold text-base hover:brightness-110 transition-all duration-300 cursor-pointer">
-              <Search className="w-5 h-5" />
-              Find Flights
-            </button>
-
-            {/* Help Link */}
-            <p className="text-accent text-sm font-medium text-center mt-4">
-              <a href="tel:1-800-XXX-XXXX" className="hover:underline">
+            {/* Help link bar */}
+            <div className="bg-surface/60 border-t border-border px-6 py-3 flex items-center justify-center gap-2">
+              <Phone className="w-4 h-4 text-accent" />
+              <a
+                href="tel:1-800-XXX-XXXX"
+                className="text-sm font-medium text-text-secondary hover:text-accent transition-colors"
+              >
                 Need help? Speak with a specialist &rarr;
               </a>
-            </p>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Trust + Airlines Bar */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, delay: 0.5 }}
+          className="mt-8 lg:mt-10 text-center"
+        >
+          {/* Trust Statement */}
+          <div className="flex items-center justify-center gap-2 mb-6">
+            <CheckCircle className="w-5 h-5 text-trust-green" />
+            <span className="text-white/90 font-semibold text-sm sm:text-base">
+              Real People. Real Support. Available 24/7.
+            </span>
+          </div>
+
+          {/* Airline Logos Grid */}
+          <div className="flex flex-wrap items-center justify-center gap-x-8 sm:gap-x-12 gap-y-4">
+            {airlines.map((airline) => (
+              <div
+                key={airline.code}
+                className="relative h-8 sm:h-10 w-24 sm:w-32 opacity-60 hover:opacity-100 transition-opacity duration-300 brightness-0 invert"
+              >
+                <Image
+                  src={`https://content.airhex.com/content/logos/airlines_${airline.code}_200_70_r.png`}
+                  alt={airline.name}
+                  fill
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
+            ))}
           </div>
         </motion.div>
       </div>
