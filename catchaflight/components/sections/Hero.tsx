@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import {
@@ -14,8 +15,17 @@ import {
   Search,
   Star,
 } from "lucide-react";
+import PlaceAutocomplete from "@/components/ui/PlaceAutocomplete";
+import type { PlaceSuggestion } from "@/lib/types";
 
 const flightTypes = ["ROUND TRIP", "ONE WAY", "MULTI CITY"] as const;
+
+const CABIN_CLASS_MAP: Record<string, string> = {
+  Economy: "economy",
+  "Premium Economy": "premium_economy",
+  Business: "business",
+  First: "first",
+};
 
 const airlines = [
   { name: "Singapore Airlines", code: "SQ" },
@@ -27,12 +37,63 @@ const airlines = [
 ];
 
 export default function Hero() {
+  const router = useRouter();
   const [activeFlightType, setActiveFlightType] =
     useState<(typeof flightTypes)[number]>("ROUND TRIP");
+  const [origin, setOrigin] = useState<PlaceSuggestion | null>(null);
+  const [destination, setDestination] = useState<PlaceSuggestion | null>(null);
+  const [departureDate, setDepartureDate] = useState("");
+  const [returnDate, setReturnDate] = useState("");
+  const [passengers, setPassengers] = useState("1");
+  const [cabinClass, setCabinClass] = useState("Economy");
+  const [error, setError] = useState("");
+
+  const handleSwap = () => {
+    const temp = origin;
+    setOrigin(destination);
+    setDestination(temp);
+  };
+
+  const handleSearch = () => {
+    setError("");
+
+    if (!origin?.iata_code) {
+      setError("Please select an origin city or airport");
+      return;
+    }
+    if (!destination?.iata_code) {
+      setError("Please select a destination city or airport");
+      return;
+    }
+    if (!departureDate) {
+      setError("Please select a departure date");
+      return;
+    }
+    if (activeFlightType === "ROUND TRIP" && !returnDate) {
+      setError("Please select a return date");
+      return;
+    }
+
+    const params = new URLSearchParams({
+      origin: origin.iata_code,
+      destination: destination.iata_code,
+      departure_date: departureDate,
+      passengers,
+      cabin_class: CABIN_CLASS_MAP[cabinClass] || "economy",
+      trip_type: activeFlightType === "ROUND TRIP" ? "round" : "oneway",
+    });
+
+    if (activeFlightType === "ROUND TRIP" && returnDate) {
+      params.set("return_date", returnDate);
+    }
+
+    router.push(`/flights/search?${params.toString()}`);
+  };
+
+  const today = new Date().toISOString().split("T")[0];
 
   return (
     <section className="relative min-h-[calc(100vh-72px)] flex items-center overflow-hidden">
-      {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-dark to-[#0a1a33]" />
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
 
@@ -89,45 +150,34 @@ export default function Hero() {
           </div>
 
           {/* Form Card */}
-          <div className="bg-white rounded-b-2xl rounded-tr-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-hidden">
+          <div className="bg-white rounded-b-2xl rounded-tr-2xl shadow-[0_20px_60px_rgba(0,0,0,0.3)] overflow-visible">
             <div className="p-4 sm:p-6 lg:p-8 space-y-4">
               {/* From Field */}
-              <div className="relative">
-                <div className="flex items-center bg-surface border border-border rounded-xl px-4 sm:px-5 py-4 sm:py-5 group focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
-                  <PlaneTakeoff className="w-5 h-5 sm:w-6 sm:h-6 text-text-secondary mr-3 sm:mr-4 flex-shrink-0" />
-                  <div className="flex-1 min-w-0">
-                    <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
-                      From
-                    </label>
-                    <input
-                      type="text"
-                      placeholder="City or airport"
-                      className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none placeholder:text-text-secondary/50"
-                    />
-                  </div>
+              <PlaceAutocomplete
+                label="From"
+                placeholder="City or airport"
+                icon={PlaneTakeoff}
+                value={origin}
+                onChange={setOrigin}
+                rightElement={
                   <button
+                    onClick={handleSwap}
                     className="w-9 h-9 sm:w-10 sm:h-10 rounded-full border-2 border-accent text-accent flex items-center justify-center hover:bg-accent hover:text-white transition-all duration-200 cursor-pointer flex-shrink-0"
                     aria-label="Swap origin and destination"
                   >
                     <ArrowUpDown className="w-4 h-4 sm:w-5 sm:h-5" />
                   </button>
-                </div>
-              </div>
+                }
+              />
 
               {/* To Field */}
-              <div className="flex items-center bg-surface border border-border rounded-xl px-4 sm:px-5 py-4 sm:py-5 focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
-                <PlaneLanding className="w-5 h-5 sm:w-6 sm:h-6 text-text-secondary mr-3 sm:mr-4 flex-shrink-0" />
-                <div className="flex-1 min-w-0">
-                  <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
-                    To
-                  </label>
-                  <input
-                    type="text"
-                    placeholder="City or airport"
-                    className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none placeholder:text-text-secondary/50"
-                  />
-                </div>
-              </div>
+              <PlaceAutocomplete
+                label="To"
+                placeholder="City or airport"
+                icon={PlaneLanding}
+                value={destination}
+                onChange={setDestination}
+              />
 
               {/* Date Row */}
               <div className="flex bg-surface border border-border rounded-xl overflow-hidden focus-within:border-primary focus-within:ring-2 focus-within:ring-primary/10 transition-all">
@@ -138,9 +188,11 @@ export default function Hero() {
                       Departure
                     </label>
                     <input
-                      type="text"
-                      placeholder="Select date"
-                      className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none placeholder:text-text-secondary/50"
+                      type="date"
+                      min={today}
+                      value={departureDate}
+                      onChange={(e) => setDepartureDate(e.target.value)}
+                      className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none"
                     />
                   </div>
                 </div>
@@ -153,9 +205,11 @@ export default function Hero() {
                           Return
                         </label>
                         <input
-                          type="text"
-                          placeholder="Select date"
-                          className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none placeholder:text-text-secondary/50"
+                          type="date"
+                          min={departureDate || today}
+                          value={returnDate}
+                          onChange={(e) => setReturnDate(e.target.value)}
+                          className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none"
                         />
                       </div>
                     </div>
@@ -170,13 +224,17 @@ export default function Hero() {
                     <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
                       Travelers
                     </label>
-                    <select className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none cursor-pointer appearance-none">
-                      <option>1 Traveler</option>
-                      <option>2 Travelers</option>
-                      <option>3 Travelers</option>
-                      <option>4 Travelers</option>
-                      <option>5 Travelers</option>
-                      <option>6+ Travelers</option>
+                    <select
+                      value={passengers}
+                      onChange={(e) => setPassengers(e.target.value)}
+                      className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none cursor-pointer appearance-none"
+                    >
+                      <option value="1">1 Traveler</option>
+                      <option value="2">2 Travelers</option>
+                      <option value="3">3 Travelers</option>
+                      <option value="4">4 Travelers</option>
+                      <option value="5">5 Travelers</option>
+                      <option value="6">6 Travelers</option>
                     </select>
                   </div>
                   <ChevronDown className="w-5 h-5 text-text-secondary flex-shrink-0" />
@@ -187,7 +245,11 @@ export default function Hero() {
                     <label className="block text-[11px] font-medium text-text-secondary uppercase tracking-wider">
                       Class
                     </label>
-                    <select className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none cursor-pointer appearance-none">
+                    <select
+                      value={cabinClass}
+                      onChange={(e) => setCabinClass(e.target.value)}
+                      className="w-full bg-transparent text-text-primary text-base sm:text-lg font-medium outline-none cursor-pointer appearance-none"
+                    >
                       <option>Economy</option>
                       <option>Premium Economy</option>
                       <option>Business</option>
@@ -198,8 +260,18 @@ export default function Hero() {
                 </div>
               </div>
 
+              {/* Error */}
+              {error && (
+                <p className="text-red-500 text-sm font-medium text-center">
+                  {error}
+                </p>
+              )}
+
               {/* Search Button */}
-              <button className="w-full flex items-center justify-center gap-2 bg-accent text-white py-4 sm:py-5 rounded-xl font-bold text-base sm:text-lg shadow-[0_4px_20px_rgba(232,98,42,0.4)] hover:brightness-110 hover:scale-[1.01] transition-all duration-300 cursor-pointer">
+              <button
+                onClick={handleSearch}
+                className="w-full flex items-center justify-center gap-2 bg-accent text-white py-4 sm:py-5 rounded-xl font-bold text-base sm:text-lg shadow-[0_4px_20px_rgba(232,98,42,0.4)] hover:brightness-110 hover:scale-[1.01] transition-all duration-300 cursor-pointer"
+              >
                 <Search className="w-5 h-5" />
                 Search Flights
               </button>
@@ -236,8 +308,11 @@ export default function Hero() {
                 </div>
               </div>
               <p className="text-text-secondary text-sm sm:text-base mt-1">
-                Top rated <span className="font-bold text-text-primary">4.7</span> out of 5, based on{" "}
-                <span className="font-bold text-text-primary">2,197</span> reviews
+                Top rated{" "}
+                <span className="font-bold text-text-primary">4.7</span> out of
+                5, based on{" "}
+                <span className="font-bold text-text-primary">2,197</span>{" "}
+                reviews
               </p>
             </div>
           </div>
@@ -250,7 +325,6 @@ export default function Hero() {
           transition={{ duration: 0.6, delay: 0.5 }}
           className="mt-8 lg:mt-10 text-center"
         >
-          {/* Trust Statement */}
           <div className="flex items-center justify-center gap-2 mb-6">
             <CheckCircle className="w-5 h-5 text-trust-green" />
             <span className="text-white/90 font-semibold text-sm sm:text-base">
@@ -258,7 +332,6 @@ export default function Hero() {
             </span>
           </div>
 
-          {/* Airline Logos Grid */}
           <div className="flex flex-wrap items-center justify-center gap-x-8 sm:gap-x-12 gap-y-4">
             {airlines.map((airline) => (
               <div
