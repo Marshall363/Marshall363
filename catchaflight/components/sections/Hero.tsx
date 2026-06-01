@@ -12,6 +12,7 @@ import {
   ChevronDown,
   ArrowUpDown,
   Search,
+  Star,
 } from "lucide-react";
 
 const flightTypes = ["ROUND TRIP", "ONE WAY", "MULTI CITY"] as const;
@@ -213,6 +214,31 @@ export default function Hero() {
               >
                 Need help? Speak with a specialist &rarr;
               </a>
+            </div>
+
+            {/* Customer Trust Rating */}
+            <div className="bg-surface border-t border-border px-6 py-5 sm:py-6 rounded-b-2xl text-center">
+              <p className="text-text-primary text-lg sm:text-xl font-normal">
+                Our customers <span className="font-bold">trust us!</span>
+              </p>
+              <div className="w-10 h-px bg-border mx-auto my-3" />
+              <div className="flex items-center justify-center gap-2">
+                <span className="text-text-primary text-xl sm:text-2xl font-extrabold">
+                  Excellent
+                </span>
+                <div className="flex gap-0.5">
+                  {[...Array(5)].map((_, i) => (
+                    <Star
+                      key={i}
+                      className="w-5 h-5 sm:w-6 sm:h-6 fill-star text-star"
+                    />
+                  ))}
+                </div>
+              </div>
+              <p className="text-text-secondary text-sm sm:text-base mt-1">
+                Top rated <span className="font-bold text-text-primary">4.7</span> out of 5, based on{" "}
+                <span className="font-bold text-text-primary">2,197</span> reviews
+              </p>
             </div>
           </div>
         </motion.div>
