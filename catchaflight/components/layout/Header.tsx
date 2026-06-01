@@ -53,9 +53,14 @@ export default function Header() {
             <div className="flex items-center">
               <a
                 href="/"
-                className="text-2xl font-bold text-primary hover:opacity-90 transition-opacity"
+                className="hover:opacity-90 transition-opacity"
               >
-                Catchaflight
+                <span className="text-2xl font-bold text-primary block leading-none">
+                  Catchaflight
+                </span>
+                <span className="text-[10px] sm:text-[11px] font-medium text-text-secondary tracking-wide">
+                  Flight Booking Assistance
+                </span>
               </a>
             </div>
 
