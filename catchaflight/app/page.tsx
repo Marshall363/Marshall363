@@ -1,6 +1,7 @@
 import Header from "@/components/layout/Header";
 import Hero from "@/components/sections/Hero";
 import TrustBar from "@/components/sections/TrustBar";
+import PersonalAgent from "@/components/sections/PersonalAgent";
 import WhyCatchaflight from "@/components/sections/WhyCatchaflight";
 import TheDifference from "@/components/sections/TheDifference";
 import HowItWorks from "@/components/sections/HowItWorks";
@@ -21,6 +22,7 @@ export default function Home() {
       <main>
         <Hero />
         <TrustBar />
+        <PersonalAgent />
         <WhyCatchaflight />
         <TheDifference />
         <HowItWorks />
