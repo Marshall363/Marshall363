@@ -1,10 +1,10 @@
 @import "tailwindcss";
 
 @theme inline {
-  --color-primary: #1A3C6E;
-  --color-primary-dark: #0F2447;
-  --color-accent: #E8622A;
-  --color-accent-dark: #C04A1A;
+  --color-primary: #005F9E;
+  --color-primary-dark: #004A7C;
+  --color-accent: #FF6B00;
+  --color-accent-dark: #D95A00;
   --color-background: #FFFFFF;
   --color-surface: #F8F9FA;
   --color-text-primary: #1A1A2E;

@@ -94,7 +94,7 @@ export default function Hero() {
 
   return (
     <section className="relative min-h-[calc(100vh-72px)] flex items-center overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-primary via-primary-dark to-[#0a1a33]" />
+      <div className="absolute inset-0 bg-gradient-to-br from-[#005F9E] via-[#004A7C] to-[#1A1A2E]" />
       <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmZmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMyI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMiIvPjwvZz48L2c+PC9zdmc+')] opacity-40" />
 
       <div className="relative z-10 max-w-[1200px] mx-auto px-4 sm:px-6 w-full py-12 lg:py-16">

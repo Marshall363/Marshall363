@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>catchaflight — Brand Asset System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --blue:#005F9E; --blue-lt:#3E8FD6; --orange:#FF6B00; --navy:#1A1A2E;
+    --paper:#F6F5F2; --card:#FFFFFF; --line:#E6E3DD; --ink:#1A1A2E; --muted:#6B6B76;
+    --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);
+    font-family:"Figtree",system-ui,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+  h1,h2,h3,.display{font-family:"Baloo 2",system-ui,sans-serif;font-weight:700;letter-spacing:-.01em;line-height:1.05;margin:0}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 32px}
+  .mono{font-family:var(--mono)}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.22em;text-transform:uppercase;color:var(--blue);font-weight:600}
+  .muted{color:var(--muted)}
+
+  /* top bar */
+  header{position:sticky;top:0;z-index:20;background:rgba(246,245,242,.82);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+  header .wrap{display:flex;align-items:center;justify-content:space-between;height:64px}
+  header img{height:26px;display:block}
+  nav{display:flex;gap:26px}
+  nav a{color:var(--muted);text-decoration:none;font-size:13px;font-weight:600;letter-spacing:.02em}
+  nav a:hover{color:var(--blue)}
+  @media(max-width:760px){nav{display:none}}
+
+  /* hero */
+  .hero{padding:84px 0 64px;border-bottom:1px solid var(--line)}
+  .hero h1{font-size:clamp(40px,6vw,76px);font-weight:800}
+  .hero h1 .b{color:var(--blue)}
+  .hero p{max-width:540px;font-size:18px;color:var(--muted);margin:20px 0 0}
+  .heroLogo{margin-top:48px;background:var(--card);border:1px solid var(--line);border-radius:20px;
+    padding:72px;display:flex;align-items:center;justify-content:center}
+  .heroLogo img{width:min(560px,82%)}
+
+  section{padding:72px 0;border-bottom:1px solid var(--line)}
+  .secHead{display:flex;align-items:baseline;gap:18px;margin-bottom:36px;flex-wrap:wrap}
+  .secHead h2{font-size:32px}
+  .secHead .num{font-family:var(--mono);font-size:13px;color:var(--orange);font-weight:600}
+  .lead{max-width:620px;color:var(--muted);font-size:16px;margin:-22px 0 36px}
+
+  /* colors */
+  .swatches{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+  @media(max-width:820px){.swatches{grid-template-columns:repeat(2,1fr)}}
+  .sw{border-radius:16px;border:1px solid var(--line);overflow:hidden;background:var(--card)}
+  .sw .chip{height:128px;display:flex;align-items:flex-end;padding:14px}
+  .sw .chip .tag{font-family:var(--mono);font-size:11px;color:#fff;background:rgba(0,0,0,.28);padding:3px 8px;border-radius:20px}
+  .sw .meta{padding:14px 16px 18px}
+  .sw .meta .nm{font-weight:700;font-size:15px}
+  .sw .meta .hx{font-family:var(--mono);font-size:12.5px;color:var(--muted);margin-top:3px}
+  .sw .meta .role{font-size:12.5px;color:var(--muted);margin-top:8px}
+
+  /* anatomy */
+  .anat{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
+  @media(max-width:820px){.anat{grid-template-columns:1fr}}
+  .anatStage{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:48px;display:flex;justify-content:center}
+  .anatStage img{width:78%}
+  .legend{display:flex;flex-direction:column;gap:18px}
+  .legend .row{display:flex;gap:14px;align-items:flex-start}
+  .legend .dot{width:14px;height:14px;border-radius:4px;margin-top:4px;flex:none}
+  .legend .row b{display:block;font-size:15px}
+  .legend .row span{font-size:14px;color:var(--muted)}
+
+  /* logo grid */
+  .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:18px}
+  @media(max-width:820px){.grid{grid-template-columns:1fr}}
+  .tile{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card)}
+  .tile .stage{height:200px;display:flex;align-items:center;justify-content:center;padding:36px}
+  .tile.dark .stage{background:var(--navy)}
+  .tile.checker .stage{background:
+     linear-gradient(45deg,#eceae5 25%,transparent 25%),
+     linear-gradient(-45deg,#eceae5 25%,transparent 25%),
+     linear-gradient(45deg,transparent 75%,#eceae5 75%),
+     linear-gradient(-45deg,transparent 75%,#eceae5 75%);
+     background-size:22px 22px;background-position:0 0,0 11px,11px -11px,-11px 0}
+  .tile .stage img{max-width:78%;max-height:100%}
+  .tile .cap{display:flex;justify-content:space-between;gap:10px;padding:14px 18px;border-top:1px solid var(--line);align-items:center}
+  .tile .cap .fn{font-family:var(--mono);font-size:12.5px;color:var(--ink)}
+  .tile .cap .use{font-size:12px;color:var(--muted)}
+
+  /* marks row */
+  .marks{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
+  @media(max-width:820px){.marks{grid-template-columns:repeat(2,1fr)}}
+  .mk{border:1px solid var(--line);border-radius:16px;background:var(--card);padding:22px;text-align:center}
+  .mk .box{height:96px;display:flex;align-items:center;justify-content:center;margin-bottom:14px}
+  .mk .box img{max-height:84px;max-width:84px}
+  .mk .lbl{font-family:var(--mono);font-size:11.5px;color:var(--muted);letter-spacing:.04em}
+  .mk .lbl b{display:block;color:var(--ink);font-size:12.5px;margin-bottom:3px;letter-spacing:0}
+
+  /* clear space + min size */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+  @media(max-width:820px){.two{grid-template-columns:1fr}}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:34px}
+  .panel h3{font-size:20px;margin-bottom:6px}
+  .panel .sub{color:var(--muted);font-size:14px;margin-bottom:26px}
+  .clearBox{position:relative;display:flex;align-items:center;justify-content:center;
+    background:repeating-linear-gradient(45deg,#F1EFEA,#F1EFEA 8px,#fff 8px,#fff 16px);
+    border-radius:12px;padding:0}
+  .clearInner{position:relative;margin:46px;background:#fff;border:1px dashed var(--blue);padding:30px 38px;border-radius:6px}
+  .clearInner img{display:block;width:260px;max-width:46vw}
+  .corr{position:absolute;background:rgba(255,107,0,.12);border:1px solid rgba(255,107,0,.5)}
+  .corr.t{top:0;left:46px;right:46px;height:46px}
+  .corr.b{bottom:0;left:46px;right:46px;height:46px}
+  .corr.l{left:0;top:46px;bottom:46px;width:46px}
+  .corr.r{right:0;top:46px;bottom:46px;width:46px}
+  .xbadge{position:absolute;top:14px;left:50%;transform:translateX(-50%);
+    font-family:var(--mono);font-size:11px;color:var(--orange);font-weight:600}
+
+  .sizes{display:flex;flex-direction:column;gap:22px;margin-top:4px}
+  .sizeRow{display:flex;align-items:center;gap:18px}
+  .sizeRow .vis{width:120px;display:flex;align-items:center;justify-content:flex-start}
+  .sizeRow .vis img{display:block}
+  .sizeRow .info b{font-size:14px}
+  .sizeRow .info div{font-size:12.5px;color:var(--muted)}
+
+  /* table */
+  .tableWrap{border:1px solid var(--line);border-radius:18px;overflow:hidden;background:var(--card)}
+  table{border-collapse:collapse;width:100%;font-size:13.5px}
+  th,td{text-align:left;padding:14px 18px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{background:#FBFAF8;font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);font-weight:700}
+  tr:last-child td{border-bottom:0}
+  td .fn{font-family:var(--mono);font-size:12.5px;color:var(--blue);font-weight:600}
+  td.small{font-family:var(--mono);font-size:12px;color:var(--muted)}
+  .pill{display:inline-block;font-size:11px;font-family:var(--mono);background:#F0EEE9;border-radius:20px;padding:2px 9px;color:var(--ink)}
+
+  footer{padding:54px 0 80px;color:var(--muted);font-size:13px}
+  footer .wrap{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+  footer img{height:22px;opacity:.9}
+  .note{background:#FFF7F0;border:1px solid #FFD9B8;border-radius:14px;padding:16px 20px;font-size:13.5px;color:#7a4a1a;margin-top:24px}
+  .note b{color:#9a3d00}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <img src="assets/catchaflight-logo-primary.svg" alt="catchaflight">
+    <nav>
+      <a href="#colors">Color</a>
+      <a href="#mark">The Mark</a>
+      <a href="#logos">Lockups</a>
+      <a href="#icons">Icons</a>
+      <a href="#rules">Usage</a>
+      <a href="#files">Files</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero wrap" style="border:0">
+  <p class="eyebrow">Brand Asset System · v2</p>
+  <h1>catcha<span class="b">flight</span><br>brand assets.</h1>
+  <p>A complete, production-ready SVG identity system — twelve clean, retina-sharp vector assets covering web, app, social, print and favicon use, with safe-area and minimum-size rules baked in.</p>
+  <div class="heroLogo">
+    <img src="assets/catchaflight-logo-primary.svg" alt="catchaflight primary logo">
+  </div>
+</div>
+
+<!-- COLOR -->
+<section id="colors">
+  <div class="wrap">
+    <div class="secHead"><span class="num">01</span><h2>Color</h2></div>
+    <p class="lead">Three core brand colors carry the identity. Blue leads, orange is the spark (reserved for the dart and the dot of the i), navy grounds the wordmark and works as the universal monochrome.</p>
+    <div class="swatches">
+      <div class="sw">
+        <div class="chip" style="background:#005F9E"><span class="tag">PRIMARY</span></div>
+        <div class="meta"><div class="nm">Flight Blue</div><div class="hx">#005F9E</div><div class="role">Icon, “flight”, fills, UI primary.</div></div>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#FF6B00"><span class="tag">ACCENT</span></div>
+        <div class="meta"><div class="nm">Signal Orange</div><div class="hx">#FF6B00</div><div class="role">The dart &amp; the i-dot only. Never body text.</div></div>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#1A1A2E"><span class="tag">NEUTRAL</span></div>
+        <div class="meta"><div class="nm">Midnight Navy</div><div class="hx">#1A1A2E</div><div class="role">“catcha”, mono logo, dark backgrounds.</div></div>
+      </div>
+      <div class="sw">
+        <div class="chip" style="background:#3E8FD6"><span class="tag">SUPPORT</span></div>
+        <div class="meta"><div class="nm">Sky Blue</div><div class="hx">#3E8FD6</div><div class="role">“flight” &amp; icon on dark backgrounds.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MARK -->
+<section id="mark">
+  <div class="wrap">
+    <div class="secHead"><span class="num">02</span><h2>The Mark</h2></div>
+    <div class="anat">
+      <div class="anatStage"><img src="assets/catchaflight-icon.svg" alt="catchaflight icon anatomy"></div>
+      <div class="legend">
+        <p class="muted" style="margin-top:0">The brandmark is a stylised takeoff: layered motion blades and an origami dart breaking upward. It is the most important asset and must stay recognisable at any size.</p>
+        <div class="row"><span class="dot" style="background:#005F9E"></span><div><b>The Wing</b><span>Slim leading blade — the contrail / horizon line.</span></div></div>
+        <div class="row"><span class="dot" style="background:#005F9E"></span><div><b>The Swoosh</b><span>Bold hooked stroke — momentum and lift.</span></div></div>
+        <div class="row"><span class="dot" style="background:#FF6B00"></span><div><b>The Dart</b><span>Folded paper-plane nose — the journey itself.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCKUPS -->
+<section id="logos">
+  <div class="wrap">
+    <div class="secHead"><span class="num">03</span><h2>Logo Lockups</h2></div>
+    <p class="lead">The horizontal lockup is the default. Use the full-colour version wherever possible; switch to reversed or monochrome only when the background or process demands it.</p>
+    <div class="grid">
+      <div class="tile"><div class="stage"><img src="assets/catchaflight-logo-primary.svg" alt="primary logo"></div>
+        <div class="cap"><span class="fn">logo-primary</span><span class="use">Default · web &amp; desktop</span></div></div>
+      <div class="tile dark"><div class="stage"><img src="assets/catchaflight-logo-dark.svg" alt="dark logo"></div>
+        <div class="cap"><span class="fn">logo-dark</span><span class="use">Dark / photographic backgrounds</span></div></div>
+      <div class="tile"><div class="stage"><img src="assets/catchaflight-logo-light.svg" alt="light logo"></div>
+        <div class="cap"><span class="fn">logo-light</span><span class="use">White headers · invoices · docs</span></div></div>
+      <div class="tile checker"><div class="stage"><img src="assets/catchaflight-logo-monochrome.svg" alt="monochrome logo"></div>
+        <div class="cap"><span class="fn">logo-monochrome</span><span class="use">Single-ink · legal · engraving</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ICONS / MARKS -->
+<section id="icons">
+  <div class="wrap">
+    <div class="secHead"><span class="num">04</span><h2>Icons &amp; Symbols</h2></div>
+    <p class="lead">The symbol works standalone across every surface — from a 16&nbsp;px favicon to a store app icon. Reversed-on-blue containers keep the mark crisp where the full-colour mark would lose contrast.</p>
+    <div class="marks">
+      <div class="mk"><div class="box"><img src="assets/catchaflight-icon.svg" alt="master icon"></div><div class="lbl"><b>icon</b>master · full colour</div></div>
+      <div class="mk"><div class="box"><img src="assets/catchaflight-icon-monochrome.svg" alt="mono icon"></div><div class="lbl"><b>icon-mono</b>print · emboss</div></div>
+      <div class="mk"><div class="box"><img src="assets/catchaflight-app-icon.svg" alt="app icon" style="border-radius:22%"></div><div class="lbl"><b>app-icon</b>iOS · Android</div></div>
+      <div class="mk"><div class="box"><img src="assets/catchaflight-social-avatar.svg" alt="social avatar" style="border-radius:50%"></div><div class="lbl"><b>social-avatar</b>circular crop</div></div>
+      <div class="mk"><div class="box"><img src="assets/catchaflight-favicon.svg" alt="favicon" style="width:48px;border-radius:11px"></div><div class="lbl"><b>favicon</b>16 / 32 px</div></div>
+    </div>
+    <div class="secHead" style="margin-top:54px;margin-bottom:24px"><h2 style="font-size:24px">Wordmark</h2></div>
+    <div class="grid">
+      <div class="tile"><div class="stage"><img src="assets/catchaflight-wordmark.svg" alt="wordmark" style="max-width:72%"></div>
+        <div class="cap"><span class="fn">wordmark</span><span class="use">Standalone text logo</span></div></div>
+      <div class="tile dark"><div class="stage"><img src="assets/catchaflight-wordmark-dark.svg" alt="wordmark dark" style="max-width:72%"></div>
+        <div class="cap"><span class="fn">wordmark-dark</span><span class="use">Reversed · all white</span></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- USAGE: clear space + min size -->
+<section id="rules">
+  <div class="wrap">
+    <div class="secHead"><span class="num">05</span><h2>Clear Space &amp; Minimum Size</h2></div>
+    <div class="two">
+      <div class="panel">
+        <h3>Clear space</h3>
+        <p class="sub">Keep a corridor of <b>1&times;</b> — the height of the icon (<span class="mono">x</span>) — free on every side. No type, image edge or other logo may enter it.</p>
+        <div class="clearBox">
+          <span class="xbadge">↕ 1x corridor</span>
+          <div class="corr t"></div><div class="corr b"></div><div class="corr l"></div><div class="corr r"></div>
+          <div class="clearInner"><img src="assets/catchaflight-logo-primary.svg" alt="clear space"></div>
+        </div>
+      </div>
+      <div class="panel">
+        <h3>Minimum sizes</h3>
+        <p class="sub">Below these thresholds legibility breaks down. Use the simplified favicon under 32&nbsp;px.</p>
+        <div class="sizes">
+          <div class="sizeRow"><div class="vis"><img src="assets/catchaflight-logo-primary.svg" style="width:120px" alt=""></div>
+            <div class="info"><b>Full lockup</b><div>Desktop nav · ≥ 132&nbsp;px wide</div></div></div>
+          <div class="sizeRow"><div class="vis"><img src="assets/catchaflight-logo-primary.svg" style="width:96px" alt=""></div>
+            <div class="info"><b>Lockup — mobile</b><div>Mobile navbar · ≥ 96&nbsp;px wide</div></div></div>
+          <div class="sizeRow"><div class="vis"><img src="assets/catchaflight-icon.svg" style="height:32px" alt=""></div>
+            <div class="info"><b>Icon</b><div>Never below 24&nbsp;px tall</div></div></div>
+          <div class="sizeRow"><div class="vis"><img src="assets/catchaflight-favicon.svg" style="width:32px;border-radius:7px" alt=""><img src="assets/catchaflight-favicon.svg" style="width:16px;border-radius:4px;margin-left:10px" alt=""></div>
+            <div class="info"><b>Favicon</b><div>32&nbsp;px &amp; 16&nbsp;px</div></div></div>
+        </div>
+      </div>
+    </div>
+    <div class="note"><b>Don’t:</b> recolour the mark, add gradients or shadows, stretch the lockup, swap the wordmark font, or move the orange off the dart and the i-dot. Orange is a spark, never a fill.</div>
+  </div>
+</section>
+
+<!-- FILES -->
+<section id="files">
+  <div class="wrap">
+    <div class="secHead"><span class="num">06</span><h2>File Index</h2></div>
+    <p class="lead">Twelve assets, all transparent-background SVG with proper <span class="mono">viewBox</span>, optimised paths and a <span class="mono">&lt;title&gt;</span> for screen readers.</p>
+    <div class="tableWrap">
+      <table>
+        <thead><tr><th>File</th><th>Intended use</th><th>viewBox</th><th>Min size</th><th>A11y</th></tr></thead>
+        <tbody>
+          <tr><td><span class="fn">catchaflight-logo-primary.svg</span></td><td>Primary web &amp; desktop branding</td><td class="small">0 0 837 202</td><td><span class="pill">132px w</span></td><td class="small">role=img · title</td></tr>
+          <tr><td><span class="fn">catchaflight-logo-dark.svg</span></td><td>Dark / photo backgrounds</td><td class="small">0 0 837 202</td><td><span class="pill">132px w</span></td><td class="small">role=img · title</td></tr>
+          <tr><td><span class="fn">catchaflight-logo-light.svg</span></td><td>White headers, invoices, documents</td><td class="small">0 0 837 202</td><td><span class="pill">132px w</span></td><td class="small">role=img · title</td></tr>
+          <tr><td><span class="fn">catchaflight-icon.svg</span></td><td>Master icon — the key asset</td><td class="small">0 0 346 276</td><td><span class="pill">24px</span></td><td class="small">role=img · title</td></tr>
+          <tr><td><span class="fn">catchaflight-icon-monochrome.svg</span></td><td>Print, emboss — uses currentColor</td><td class="small">0 0 346 276</td><td><span class="pill">24px</span></td><td class="small">currentColor</td></tr>
+          <tr><td><span class="fn">catchaflight-logo-monochrome.svg</span></td><td>Legal, single-ink print, invoices</td><td class="small">0 0 837 202</td><td><span class="pill">132px w</span></td><td class="small">currentColor</td></tr>
+          <tr><td><span class="fn">catchaflight-favicon.svg</span></td><td>Browser tabs — simplified silhouette</td><td class="small">0 0 32 32</td><td><span class="pill">16px</span></td><td class="small">role=img · title</td></tr>
+          <tr><td><span class="fn">catchaflight-app-icon.svg</span></td><td>iOS / Android app icon</td><td class="small">0 0 512 512</td><td><span class="pill">— </span></td><td class="small">role=img · title</td></tr>
+          <tr><td><span class="fn">catchaflight-social-avatar.svg</span></td><td>Social profiles — circular crop safe</td><td class="small">0 0 512 512</td><td><span class="pill">— </span></td><td class="small">role=img · title</td></tr>
+          <tr><td><span class="fn">catchaflight-wordmark.svg</span></td><td>Standalone text logo</td><td class="small">0 0 553 104</td><td><span class="pill">100px w</span></td><td class="small">role=img · title</td></tr>
+          <tr><td><span class="fn">catchaflight-wordmark-dark.svg</span></td><td>Reversed wordmark — all white</td><td class="small">0 0 553 104</td><td><span class="pill">100px w</span></td><td class="small">role=img · title</td></tr>
+          <tr><td><span class="fn">catchaflight-brandmark.svg</span></td><td>Symbol only — favicon, loaders, badges</td><td class="small">0 0 346 276</td><td><span class="pill">24px</span></td><td class="small">role=img · title</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <img src="assets/catchaflight-logo-monochrome.svg" alt="catchaflight">
+    <span>Brand Asset System · 12 production SVGs · #005F9E / #FF6B00 / #1A1A2E</span>
+  </div>
+</footer>
+
+</body>
+</html>

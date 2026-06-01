@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { Phone, Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -53,12 +54,17 @@ export default function Header() {
             <div className="flex items-center">
               <a
                 href="/"
-                className="hover:opacity-90 transition-opacity"
+                className="hover:opacity-90 transition-opacity flex flex-col"
               >
-                <span className="text-2xl font-bold text-primary block leading-none">
-                  Catchaflight
-                </span>
-                <span className="text-[10px] sm:text-[11px] font-medium text-text-secondary tracking-wide">
+                <Image
+                  src="/brand/catchaflight-logo-primary.svg"
+                  alt="catchaflight"
+                  width={180}
+                  height={43}
+                  className="h-8 sm:h-9 w-auto"
+                  priority
+                />
+                <span className="text-[10px] sm:text-[11px] font-medium text-text-secondary tracking-wide mt-0.5">
                   Flight Booking Assistance
                 </span>
               </a>

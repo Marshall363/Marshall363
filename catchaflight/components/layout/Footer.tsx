@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { Phone, Mail, MapPin } from "lucide-react";
 
 const quickLinks = [
@@ -50,8 +51,14 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Column 1 - Brand */}
           <div>
-            <a href="/" className="font-bold text-[22px] text-white">
-              Catchaflight
+            <a href="/">
+              <Image
+                src="/brand/catchaflight-logo-dark.svg"
+                alt="catchaflight"
+                width={180}
+                height={43}
+                className="h-8 w-auto"
+              />
             </a>
             <p className="text-sm text-white/60 mt-4 leading-relaxed">
               Premium flight booking assistance for travelers who value

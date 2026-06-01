@@ -24,6 +24,10 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.catchaflight.com",
   },
+  icons: {
+    icon: "/brand/catchaflight-favicon.svg",
+    apple: "/brand/catchaflight-app-icon.svg",
+  },
 };
 
 const organizationSchema = {
