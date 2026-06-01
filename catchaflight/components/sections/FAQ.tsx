@@ -60,7 +60,7 @@ export default function FAQ() {
               Everything you need to know about booking with Catchaflight.
             </p>
             <a
-              href="#"
+              href="/contact"
               className="inline-block text-primary font-semibold hover:underline mt-6"
             >
               Still have questions? Speak with a specialist &rarr;

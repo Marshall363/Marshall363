@@ -3,21 +3,21 @@
 import { Phone, Mail, MapPin } from "lucide-react";
 
 const quickLinks = [
-  { label: "Home", href: "#" },
-  { label: "Flights", href: "#" },
-  { label: "Destinations", href: "#" },
-  { label: "About", href: "#" },
-  { label: "Contact", href: "#" },
-  { label: "Careers", href: "#" },
+  { label: "Home", href: "/" },
+  { label: "Flights", href: "/flights" },
+  { label: "Destinations", href: "/destinations" },
+  { label: "About", href: "/about" },
+  { label: "Contact", href: "/contact" },
+  { label: "Careers", href: "/careers" },
 ];
 
 const supportLinks = [
-  { label: "Flight Changes", href: "#" },
-  { label: "Cancellations", href: "#" },
-  { label: "Group Travel", href: "#" },
-  { label: "International Flights", href: "#" },
-  { label: "Family Travel", href: "#" },
-  { label: "Business Travel", href: "#" },
+  { label: "Flight Changes", href: "/support/flight-changes" },
+  { label: "Cancellations", href: "/support/cancellations" },
+  { label: "Group Travel", href: "/support/group-travel" },
+  { label: "International Flights", href: "/support/international-flights" },
+  { label: "Family Travel", href: "/support/family-travel" },
+  { label: "Business Travel", href: "/support/business-travel" },
 ];
 
 const socialButtons = [
